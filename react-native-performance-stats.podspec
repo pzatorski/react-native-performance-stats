@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
         }
 
         s.dependency "React-Codegen"
-        s.dependency "RCT-Folly", folly_version
+        s.dependency "RCT-Folly"
         s.dependency "RCTRequired"
         s.dependency "RCTTypeSafety"
         s.dependency "ReactCommon/turbomodule/core"
