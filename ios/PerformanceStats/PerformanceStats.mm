@@ -135,15 +135,17 @@ RCT_EXPORT_MODULE(PerformanceStats)
     if (withCPU) {
         cpu = cpu_usage();
     }
-    
-    [self sendEventWithName:@"performanceStatsUpdate" body:@{
-        @"jsFps": [NSNumber numberWithUnsignedInteger:_jsFPSTracker.FPS],
-        @"uiFps": [NSNumber numberWithUnsignedInteger:_uiFPSTracker.FPS],
-        @"usedCpu": [NSNumber numberWithFloat:cpu],
-        @"usedRam": [NSNumber numberWithDouble:mem],
-        @"viewCount": [NSNumber numberWithUnsignedInteger:viewCount],
-        @"visibleViewCount": [NSNumber numberWithUnsignedInteger:visibleViewCount]
-    }];
+
+    if (self.bridge && self.bridge.valid) {
+      [self sendEventWithName:@"performanceStatsUpdate" body:@{
+          @"jsFps": [NSNumber numberWithUnsignedInteger:_jsFPSTracker.FPS],
+          @"uiFps": [NSNumber numberWithUnsignedInteger:_uiFPSTracker.FPS],
+          @"usedCpu": [NSNumber numberWithFloat:cpu],
+          @"usedRam": [NSNumber numberWithDouble:mem],
+          @"viewCount": [NSNumber numberWithUnsignedInteger:viewCount],
+          @"visibleViewCount": [NSNumber numberWithUnsignedInteger:visibleViewCount]
+      }];
+    }
     
     __weak __typeof__(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
